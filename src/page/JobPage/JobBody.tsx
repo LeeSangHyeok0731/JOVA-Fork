@@ -27,30 +27,11 @@ const DividSpace = styled.div`
   margin-top: 20px;
   margin-bottom: 40px;
 `;
-
-type TextPProps = {
-  marginLeft: number;
-};
-
-const TextP = styled.p<TextPProps>`
-  font-family: "Pretendard-Regular", sans-serif;
-  margin: 0;
-  margin-left: ${({ marginLeft }) => `${marginLeft}px`};
-`;
-
 const MiniJobWrapper = styled.div`
   width: 1103px;
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ListWrapper = styled.div`
-  width: 1103px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  border-bottom: 4px solid gray;
 `;
 
 const PaginationWrapper = styled.div`

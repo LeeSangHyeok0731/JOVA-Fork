@@ -11,4 +11,3 @@ React.js + TypeScript + Vite
 3. react-helmet
 4. react-markdown
 5. rehype-raw
-# JOVA-Fork
