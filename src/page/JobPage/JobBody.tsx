@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import MiniJob from "./MiniJob";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import useGetAricleList from "../../custom/useGetArticlelist";
 
 const Text = styled.h1`
   font-family: "Pretendard-Regular", sans-serif;
@@ -27,6 +27,7 @@ const DividSpace = styled.div`
   margin-top: 20px;
   margin-bottom: 40px;
 `;
+
 const MiniJobWrapper = styled.div`
   width: 1103px;
   display: flex;
@@ -71,57 +72,11 @@ const NotificationButton = styled(Link)`
   color: black;
 `;
 
-type NotionProps = {
-  User: string;
-  Title: string;
-  Time: string;
-  Contents: string;
-  Num: number; // 선택 속성 추가
-};
-
 function JobBody() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [TempArray, setTempArray] = useState<NotionProps[]>([]); // 초기값 설정 및 타입 명시
-
-  const Api = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/articles/list",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer your_access_token",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("응답 오류");
-      }
-
-      const responseData = await response.json();
-      console.log(responseData);
-      setTempArray(responseData);
-    } catch (error) {
-      setError("요청 실패!");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    console.log("api 요청 보내기");
-    Api();
-  }, []);
+  const { data, loading, error } = useGetAricleList();
 
   return (
     <Wrapper>
@@ -132,28 +87,28 @@ function JobBody() {
           <p>Loading...</p>
         ) : error ? (
           <p>{error}</p>
-        ) : TempArray?.length ? (
-          TempArray.slice(
-            (currentPage - 1) * itemsPerPage,
-            currentPage * itemsPerPage
-          ).map((item) => <MiniJob key={item.Title} {...item} />)
+        ) : data?.length ? (
+          data
+            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+            .map((item) => <MiniJob key={item.Num} {...item} />)
         ) : (
           <p>No items available</p>
         )}
       </MiniJobWrapper>
       <PaginationWrapper>
-        {Array.from(
-          { length: Math.ceil(TempArray.length / itemsPerPage) },
-          (_, index) => (
-            <PageButton
-              key={index}
-              active={currentPage === index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </PageButton>
-          )
-        )}
+        {data &&
+          Array.from(
+            { length: Math.ceil(data.length / itemsPerPage) },
+            (_, index) => (
+              <PageButton
+                key={index}
+                active={currentPage === index + 1}
+                onClick={() => setCurrentPage(index + 1)}
+              >
+                {index + 1}
+              </PageButton>
+            )
+          )}
       </PaginationWrapper>
       <NotificationButtonBox>
         <NotificationButton to="/notification">
