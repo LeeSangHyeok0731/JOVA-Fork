@@ -76,6 +76,7 @@ type NotionProps = {
   Title: string;
   Time: string;
   Contents: string;
+  Num?: number; // 선택 속성 추가
 };
 
 function JobBody() {
@@ -84,8 +85,7 @@ function JobBody() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  const [TempArray, setTempArray] = useState();
+  const [TempArray, setTempArray] = useState<NotionProps[]>([]); // 초기값 설정 및 타입 명시
 
   const Api = async () => {
     setLoading(true);
@@ -107,13 +107,13 @@ function JobBody() {
         throw new Error("응답 오류");
       }
 
-      const responseData = await response.json(); // JSON 응답 데이터 파싱
+      const responseData = await response.json();
       console.log(responseData);
-      setTempArray(responseData); // 성공 시 응답 데이터 저장
+      setTempArray(responseData);
     } catch (error) {
-      setError("요청 실패!"); // 에러 처리
+      setError("요청 실패!");
     } finally {
-      setLoading(false); // 로딩 종료
+      setLoading(false);
     }
   };
 
@@ -135,14 +135,14 @@ function JobBody() {
           TempArray.slice(
             (currentPage - 1) * itemsPerPage,
             currentPage * itemsPerPage
-          ).map((item: NotionProps) => <MiniJob key={item.Title} {...item} />)
+          ).map((item) => <MiniJob key={item.Title} {...item} />)
         ) : (
           <p>No items available</p>
         )}
       </MiniJobWrapper>
       <PaginationWrapper>
         {Array.from(
-          { length: Math.ceil((TempArray?.length || 0) / itemsPerPage) },
+          { length: Math.ceil(TempArray.length / itemsPerPage) },
           (_, index) => (
             <PageButton
               key={index}
