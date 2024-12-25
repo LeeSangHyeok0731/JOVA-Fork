@@ -76,7 +76,7 @@ type NotionProps = {
   Title: string;
   Time: string;
   Contents: string;
-  Num?: number; // 선택 속성 추가
+  Num: number; // 선택 속성 추가
 };
 
 function JobBody() {
@@ -112,6 +112,7 @@ function JobBody() {
       setTempArray(responseData);
     } catch (error) {
       setError("요청 실패!");
+      console.log(error);
     } finally {
       setLoading(false);
     }
