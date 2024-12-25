@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import baseImage from "../../images/image/baseImage.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PenIcon from "../../images/Pen";
 import { useNavigate } from "react-router-dom";
 
@@ -60,13 +60,20 @@ function ProfilPicture() {
   const [userName, setUserName] = useState("이름");
   const [github, setGithub] = useState("https://github.com/LeeSangHyeok0731");
   const [mail, setMail] = useState("s20000@gsm.hs.kr");
-  const [major, setmajor] = useState("프론트엔드");
+  const [major, setMajor] = useState("프론트엔드");
 
   const go = useNavigate();
 
   const goPath = () => {
     go("/profilcorrection");
   };
+
+  useEffect(() => {
+    setUserName("이름");
+    setGithub("이름");
+    setMail("이름");
+    setMajor("이름");
+  }, []);
 
   return (
     <>
