@@ -131,11 +131,13 @@ function JobBody() {
           <p>Loading...</p>
         ) : error ? (
           <p>{error}</p>
-        ) : (
-          TempArray?.slice(
+        ) : TempArray?.length ? (
+          TempArray.slice(
             (currentPage - 1) * itemsPerPage,
             currentPage * itemsPerPage
           ).map((item: NotionProps) => <MiniJob key={item.Title} {...item} />)
+        ) : (
+          <p>No items available</p>
         )}
       </MiniJobWrapper>
       <PaginationWrapper>
