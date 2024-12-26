@@ -13,7 +13,7 @@ const useGetAricleList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const url =
+  const url: string =
     "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/articles/list";
 
   useEffect(() => {

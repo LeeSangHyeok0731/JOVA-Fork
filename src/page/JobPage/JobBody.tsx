@@ -111,7 +111,7 @@ function JobBody() {
           )}
       </PaginationWrapper>
       <NotificationButtonBox>
-        <NotificationButton to="/notification">
+        <NotificationButton to="/jobnotion">
           구인구직 작성하기
         </NotificationButton>
       </NotificationButtonBox>
