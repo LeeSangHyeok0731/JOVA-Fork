@@ -1,8 +1,21 @@
 import styled from "styled-components";
 import baseImage from "../../images/image/baseImage.png";
-import { useEffect, useState } from "react";
 import PenIcon from "../../images/Pen";
 import { useNavigate } from "react-router-dom";
+import { useProfilContext } from "../../context/context";
+
+const MajorBox = styled.div`
+  display: inline-block;
+  background-color: #818181;
+  color: white;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+`;
 
 const Text = styled.h1`
   font-family: "Pretendard-Regular", sans-serif;
@@ -54,26 +67,18 @@ const CorrectionButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 60px;
+  margin-left: 1000px;
 `;
 
 function ProfilPicture() {
-  const [userName, setUserName] = useState("이름");
-  const [github, setGithub] = useState("https://github.com/LeeSangHyeok0731");
-  const [mail, setMail] = useState("s20000@gsm.hs.kr");
-  const [major, setMajor] = useState("프론트엔드");
+  const { name, github, email, unMajor, funMajor } = useProfilContext();
 
   const go = useNavigate();
 
   const goPath = () => {
     go("/profilcorrection");
   };
-
-  useEffect(() => {
-    setUserName("이름");
-    setGithub("이름");
-    setMail("이름");
-    setMajor("이름");
-  }, []);
 
   return (
     <>
@@ -83,7 +88,7 @@ function ProfilPicture() {
         <ProfilInformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>이름:</ProfilInformation>
-            <UserImformation>{userName}</UserImformation>
+            <UserImformation>{name}</UserImformation>
           </ImformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>github:</ProfilInformation>
@@ -91,11 +96,36 @@ function ProfilPicture() {
           </ImformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>E-mail:</ProfilInformation>
-            <UserImformation>{mail}</UserImformation>
+            <UserImformation>{email}</UserImformation>
           </ImformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>전공:</ProfilInformation>
-            <UserImformation>{major}</UserImformation>
+            <UserImformation>
+              {unMajor.map((x) => {
+                const majors = [
+                  "FrontEnd",
+                  "BackEnd",
+                  "DevOps",
+                  "UI/UX design",
+                  "AI",
+                  "AOS",
+                  "IOS",
+                  "DB",
+                ];
+                return <MajorBox key={`uni-${x}`}>{majors[x]}</MajorBox>;
+              })}
+              {funMajor.map((x) => {
+                const majors = [
+                  "게임개발",
+                  "모바일로보틱스",
+                  "클라우드컴퓨팅",
+                  "플러터",
+                  "사이버보안",
+                  "IT네트워크",
+                ];
+                return <MajorBox key={`func-${x}`}>{majors[x]}</MajorBox>;
+              })}
+            </UserImformation>
           </ImformationWrapper>
         </ProfilInformationWrapper>
       </ProfilWrapper>

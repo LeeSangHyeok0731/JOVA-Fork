@@ -52,7 +52,7 @@ type InfoDetail = {
   Contents: string;
 };
 
-function InfoBox({ Name, Title, TimeDate, Contents }: InfoDetail) {
+function InfoBoxJob({ Name, Title, TimeDate, Contents }: InfoDetail) {
   return (
     <Body>
       <InfoWrapper>
@@ -71,4 +71,4 @@ function InfoBox({ Name, Title, TimeDate, Contents }: InfoDetail) {
   );
 }
 
-export default InfoBox;
+export default InfoBoxJob;

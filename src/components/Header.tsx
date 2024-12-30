@@ -38,7 +38,7 @@ const TextWrapper = styled.div`
 `;
 
 const IconBox = styled(Link)`
-  margin-top: 15px;
+  margin-top: 5px;
 `;
 
 function Header() {
@@ -53,7 +53,6 @@ function Header() {
           <Text to="/jobpage">구인구직</Text>
           <Text to="/notion">공지</Text>
           <Text to="/profil">프로필</Text>
-          <Text to="/">소개</Text>
         </TextWrapper>
         <IconBox to="/login">
           <MyIcon />

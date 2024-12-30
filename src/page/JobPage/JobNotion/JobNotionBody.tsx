@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Helmet } from "react-helmet";
+import usePostArticleList from "../../../custom/usePostArticleList"; // Assuming it's a custom hook
 
 const WrapperBox = styled.div`
   width: 100vw;
@@ -90,12 +91,13 @@ const CloseButton = styled.button`
 
 function JobNotionBody() {
   const [title, setTitle] = useState<string>("");
-
   const [contents, setContents] = useState<string>(
     "# 마크다운 ```문법```을 사용해 작성해 주세요"
   );
   const [images, setImages] = useState<{ id: string; base64: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const { postArticle } = usePostArticleList(); // Assuming usePostArticleList is a custom hook that returns the function
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -128,9 +130,17 @@ function JobNotionBody() {
     e.preventDefault();
   };
 
-  const goServer = () => {
-    console.log(title);
-    console.log(contents);
+  const handleSubmit = () => {
+    const articleData = {
+      title: title,
+      content: contents,
+      category: 0,
+      author: "이상혁",
+      endsAt: "2024.12.26",
+    };
+
+    // Calling postArticle function directly inside the component
+    postArticle(articleData);
   };
 
   useEffect(() => {
@@ -162,7 +172,7 @@ function JobNotionBody() {
             이미지를 드래그 앤 드롭하거나 클릭하여 업로드하세요.
           </DragAndDropArea>
           <button onClick={() => setIsModalOpen(true)}>미리보기</button>
-          <button onClick={goServer}>작성</button>
+          <button onClick={handleSubmit}>작성</button>
         </BodyWrapper>
 
         {isModalOpen && (

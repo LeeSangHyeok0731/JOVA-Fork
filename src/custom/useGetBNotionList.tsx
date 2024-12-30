@@ -9,13 +9,13 @@ type Article = {
   author: string;
 };
 
-const useGetAricleList = () => {
+const useGetNotionList = () => {
   const [data, setData] = useState<Article[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const url: string =
-    "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/articles/list";
+    "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/announcements/list";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,4 +64,4 @@ const useGetAricleList = () => {
   return { data, loading, error };
 };
 
-export default useGetAricleList;
+export default useGetNotionList;

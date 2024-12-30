@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import baseImage from "../../../images/image/baseImage.png";
+import UniversalMajor from "../majorSelection/universalMajor";
+import FunctionGroup from "../majorSelection/functionGroup";
+import { useNavigate } from "react-router-dom";
+import { useProfilContext } from "../../../context/context";
 
 // 스타일 컴포넌트 정의
 const Text = styled.h1`
@@ -27,7 +31,7 @@ const ProfilImage = styled.img`
 
 const ProfilInformationWrapper = styled.div`
   width: 562px;
-  height: 376px;
+  height: 480px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -63,17 +67,15 @@ const Body = styled.div`
   flex-direction: column;
 `;
 
-const ImageUpload = styled.div`
+const ImageUpload = styled.input`
   border: 2px dashed #ccc;
   border-radius: 8px;
   width: 197px;
-  height: 87px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 57px;
   font-size: 14px;
   color: #999;
   cursor: pointer;
+  padding-top: 30px;
 
   &:hover {
     background-color: #f9f9f9;
@@ -152,7 +154,7 @@ const ModalContent = styled.div`
 const CloseButton = styled.button`
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: 400px;
   background: none;
   border: none;
   font-size: 18px;
@@ -164,10 +166,70 @@ const CloseButton = styled.button`
     color: #333;
   }
 `;
+const MajorBox = styled.div`
+  display: inline-block;
+  background-color: #818181;
+  color: white;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+`;
+
+const BtnWrapper = styled.div`
+  margin-left: 291px;
+  display: flex;
+  flex-direction: row;
+`;
+
+const SubmitBtn = styled.div`
+  width: 135px;
+  height: 65px;
+  background-color: #929292;
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CancleBtn = styled.div`
+  width: 135px;
+  height: 65px;
+  background-color: white;
+  color: #929292;
+  border-radius: 8px;
+  border: 1px solid #929292;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 // 컴포넌트 정의
 function ProfilPictureCorrection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profil, setProfil] = useState<string>(baseImage);
+  const [universalMajor, setUniversalMajor] = useState<number[]>([]);
+  const [functionMajor, setFunctionMajor] = useState<number[]>([]);
+
+  const {
+    name,
+    github,
+    email,
+    unMajor,
+    funMajor,
+    setName,
+    setGithub,
+    setEmail,
+    setUnMajor,
+    setFunMajor,
+  } = useProfilContext();
+  useProfilContext();
+
+  const go = useNavigate();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
@@ -177,36 +239,111 @@ function ProfilPictureCorrection() {
     setIsModalOpen(false);
   };
 
+  const handleClick = () => {
+    go("/profil");
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      // 파일을 Base64로 변환하여 미리보기 가능
+      reader.onload = () => {
+        if (reader.result) {
+          setProfil(reader.result.toString());
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  useEffect(() => {
+    setUnMajor(universalMajor);
+    setFunMajor(functionMajor);
+    console.log(unMajor);
+    console.log(funMajor);
+  }, [universalMajor, functionMajor]);
+
   return (
     <Body>
       <Text>개인정보 수정</Text>
       <ProfilWrapper>
         <ImageCorrection>
-          <ProfilImage src={baseImage} />
+          <ProfilImage src={profil} alt="Profile" />
           <MiniBoxWrapper>
-            <ImageUpload>이미지 업로드하기</ImageUpload>
-            <ToBaseImage>기본이미지</ToBaseImage>
+            <ImageUpload
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            <ToBaseImage onClick={() => setProfil(baseImage)}>
+              기본이미지
+            </ToBaseImage>
           </MiniBoxWrapper>
         </ImageCorrection>
         <ProfilInformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>이름:</ProfilInformation>
-            <InputBox />
+            <InputBox
+              placeholder="이름을 입력하세요"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </ImformationWrapper>
           <ImformationWrapper>
-            <ProfilInformation>github:</ProfilInformation>
-            <InputBox />
+            <ProfilInformation>Github:</ProfilInformation>
+            <InputBox
+              placeholder="Github 링크를 입력하세요"
+              value={github}
+              onChange={(e) => setGithub(e.target.value)}
+            />
           </ImformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>E-mail:</ProfilInformation>
-            <InputBox />
+            <InputBox
+              placeholder="이메일 주소를 입력하세요"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </ImformationWrapper>
           <ImformationWrapper>
             <ProfilInformation>전공:</ProfilInformation>
+            <div>
+              {universalMajor.map((x) => {
+                const majors = [
+                  "FrontEnd",
+                  "BackEnd",
+                  "DevOps",
+                  "UI/UX design",
+                  "AI",
+                  "AOS",
+                  "IOS",
+                  "DB",
+                ];
+                return <MajorBox key={`uni-${x}`}>{majors[x]}</MajorBox>;
+              })}
+              {functionMajor.map((x) => {
+                const majors = [
+                  "게임개발",
+                  "모바일로보틱스",
+                  "클라우드컴퓨팅",
+                  "플러터",
+                  "사이버보안",
+                  "IT네트워크",
+                ];
+                return <MajorBox key={`func-${x}`}>{majors[x]}</MajorBox>;
+              })}
+            </div>
             <MajorSellectBtn onClick={handleModalOpen}>
               전공 선택
             </MajorSellectBtn>
           </ImformationWrapper>
+          <BtnWrapper>
+            <SubmitBtn onClick={handleClick}>수정</SubmitBtn>
+            <CancleBtn onClick={handleClick}>취소</CancleBtn>
+          </BtnWrapper>
         </ProfilInformationWrapper>
       </ProfilWrapper>
 
@@ -215,7 +352,14 @@ function ProfilPictureCorrection() {
           <ModalContent>
             <CloseButton onClick={handleModalClose}>×</CloseButton>
             <h2>전공 선택</h2>
-            <p>전공을 선택하세요.</p>
+            <UniversalMajor
+              activeIndices={universalMajor}
+              setActiveIndices={setUniversalMajor}
+            />
+            <FunctionGroup
+              activeIndices={functionMajor}
+              setActiveIndices={setFunctionMajor}
+            />
           </ModalContent>
         </ModalBackground>
       )}

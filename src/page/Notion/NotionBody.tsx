@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import MiniNotion from "./MiniNotion";
 import { Link } from "react-router-dom";
+import useGetNotionList from "../../custom/useGetBNotionList";
 
 const Text = styled.h1`
   font-family: "Pretendard-Regular", sans-serif;
@@ -44,14 +45,6 @@ const MiniNotionWrapper = styled.div`
   align-items: center;
 `;
 
-const ListWrapper = styled.div`
-  width: 1103px;
-  height: 23px;
-  display: flex;
-  align-items: center;
-  border-bottom: 4px solid gray;
-`;
-
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -89,17 +82,37 @@ const NotificationButton = styled(Link)`
   color: black;
 `;
 
-type NotionProps = {
-  User: string;
-  Title: string;
-  Time: string;
-  Contents: string;
-};
+const Table = styled.div`
+  width: 1103px;
+  border-collapse: collapse;
+  margin: 0;
+`;
+
+const TableRow = styled.div`
+  display: flex;
+  border-bottom: 3px solid #e0e0e0;
+  padding: 5px 0; /* 상하 여백 최소화 */
+  line-height: 1; /* 줄 간격 최소화 */
+`;
+
+const TableCell = styled.div<{ flex?: number }>`
+  flex: ${({ flex }) => flex || 1};
+  padding: 5px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 function NotionBody() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const { data, loading, error } = useGetNotionList();
+
+  console.log(data);
+
+  /*
   const TempArray: NotionProps[] = [
     {
       User: "1412 이상혁",
@@ -115,13 +128,6 @@ function NotionBody() {
       Time: "2024.12.17",
       Contents:
         "*급구* Rainbow Friends 팀원 모집 중입니다. 관심 있는 분들은 DM 주세요!",
-    },
-    {
-      User: "전준연",
-      Title: "게이 섹스팟",
-      Time: "2024.12.16",
-      Contents:
-        "**게이 섹스팟** 관련 이야기입니다. 관심 있는 분들은 댓글 남겨주세요.",
     },
     {
       User: "최준영",
@@ -142,12 +148,6 @@ function NotionBody() {
       Title: "밥 한 끼 사드릴께요",
       Time: "2077.27.01",
       Contents: "_밥 한 끼 사드릴께요_ 연락 주세요. 😊",
-    },
-    {
-      User: "이주언",
-      Title: "섹스하고 싶다",
-      Time: "202.27.01",
-      Contents: "이건 **단순한 대화**입니다. 진지한 대화나 친목을 원합니다.",
     },
     {
       User: "박현민",
@@ -378,12 +378,9 @@ function NotionBody() {
       Time: "adfwaoirhvbn",
       Contents: "### 메타데이터\n**임의로 설정한 메타데이터**입니다.",
     },
-  ];
+  ];*/
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const displayedData = TempArray.slice(startIndex, startIndex + itemsPerPage);
-
-  const totalPages = Math.ceil(TempArray.length / itemsPerPage);
+  const totalPages = Math.ceil(data != null ? data.length / itemsPerPage : 0);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -393,24 +390,29 @@ function NotionBody() {
     <Wrapper>
       <Text>공지사항</Text>
       <DividSpace />
-      <TextP marginLeft={0}>전체 {TempArray.length}건</TextP>
-      <ListWrapper>
-        <TextP marginLeft={65}>No</TextP>
-        <TextP marginLeft={108}>작성자</TextP>
-        <TextP marginLeft={353}>제목</TextP>
-        <TextP marginLeft={346}>등록일</TextP>
-      </ListWrapper>
+      <TextP marginLeft={0}>전체 {data != null ? data.length : 0}건</TextP>
+      <Table>
+        <TableRow>
+          <TableCell flex={0.5}>No</TableCell>
+          <TableCell flex={1}>작성자</TableCell>
+          <TableCell flex={2}>제목</TableCell>
+          <TableCell flex={1}>등록일</TableCell>
+        </TableRow>
+      </Table>
       <MiniNotionWrapper>
-        {displayedData.map((notion, index) => (
-          <MiniNotion
-            key={startIndex + index}
-            Num={startIndex + index + 1}
-            User={notion.User}
-            Title={notion.Title}
-            Time={notion.Time}
-            Contents={notion.Contents}
-          />
-        ))}
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : data?.length ? (
+          data
+            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+            .map((item, index) => (
+              <MiniNotion key={index + 1} Num={index + 1} {...item} />
+            ))
+        ) : (
+          <p>No items available</p>
+        )}
       </MiniNotionWrapper>
       <PaginationWrapper>
         {Array.from({ length: totalPages }, (_, index) => {

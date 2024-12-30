@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 type NotionProps = {
+  title: string;
+  content: string;
+  category: string;
+  createdAt: string;
+  endsAt: string;
+  author: string;
   Num: number;
-  User: string;
-  Title: string;
-  Time: string;
-  Contents: string;
 };
 
 const Table = styled.div`
@@ -35,34 +37,47 @@ const TableCell = styled.div<{ flex?: number }>`
   text-overflow: ellipsis;
 `;
 
-function MiniNotion({ Num, User, Title, Time, Contents }: NotionProps) {
-  const [number, setNumber] = useState(0);
-  const [userName, setUserName] = useState("JOVA");
-  const [title, setTitle] = useState("내용");
-  const [date, setDate] = useState("20xx.xx.xx");
-  const [content, setContent] = useState("# 오류");
+function MiniNotion({
+  title,
+  content,
+  category,
+  createdAt,
+  endsAt,
+  author,
+  Num,
+}: NotionProps) {
+  const [Title, setTitle] = useState("");
+  const [Content, setContent] = useState("");
+  const [Category, setCategory] = useState("");
+  const [CreatedAt, setCreatedAt] = useState("");
+  const [EndsAt, setEndsAt] = useState("");
+  const [Author, setAuthor] = useState("");
+  const [number, setNumber] = useState<number>(0);
 
   const go = useNavigate();
 
   useEffect(() => {
+    setTitle(title);
+    setContent(content);
+    setCategory(category);
+    setCreatedAt(createdAt);
+    setEndsAt(endsAt);
+    setAuthor(author);
     setNumber(Num);
-    setUserName(User);
-    setTitle(Title);
-    setDate(Time);
-    setContent(Contents);
-  }, [Num, User, Title, Time, Contents]);
+  }, [title, content, category, createdAt, endsAt, author, Num]);
 
   const handleClick = () => {
-    go("/notion/detail", { state: { userName, title, date, content } });
+    go("/notion/detail", { state: { Author, Title, EndsAt, Content } });
+    console.log(Category);
   };
 
   return (
     <Table>
       <TableRow onClick={handleClick}>
         <TableCell flex={0.5}>{number}</TableCell>
-        <TableCell flex={1}>{userName}</TableCell>
-        <TableCell flex={2}>{title}</TableCell>
-        <TableCell flex={1}>{date}</TableCell>
+        <TableCell flex={1}>{Author}</TableCell>
+        <TableCell flex={2}>{Title}</TableCell>
+        <TableCell flex={1}>{CreatedAt}</TableCell>
       </TableRow>
     </Table>
   );

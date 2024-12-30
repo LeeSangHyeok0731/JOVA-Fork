@@ -72,16 +72,54 @@ const NotificationButton = styled(Link)`
   color: black;
 `;
 
+const Table = styled.div`
+  width: 1103px;
+  border-collapse: collapse;
+  margin: 0;
+`;
+
+const TableRow = styled.div`
+  display: flex;
+  border-bottom: 3px solid #e0e0e0;
+  padding: 5px 0; /* 상하 여백 최소화 */
+  line-height: 1; /* 줄 간격 최소화 */
+`;
+
+const TableCell = styled.div<{ flex?: number }>`
+  flex: ${({ flex }) => flex || 1};
+  padding: 5px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const TextP = styled.p`
+  font-family: "Pretendard-Regular", sans-serif;
+  margin: 0;
+`;
+
 function JobBody() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const { data, loading, error } = useGetAricleList();
 
+  const total = data != null ? data.length : null;
+
   return (
     <Wrapper>
       <Text>구인구직</Text>
       <DividSpace />
+      <TextP>전체 {total}건</TextP>
+      <Table>
+        <TableRow>
+          <TableCell flex={0.5}>No</TableCell>
+          <TableCell flex={1}>작성자</TableCell>
+          <TableCell flex={2}>제목</TableCell>
+          <TableCell flex={1}>등록일</TableCell>
+        </TableRow>
+      </Table>
       <MiniJobWrapper>
         {loading ? (
           <p>Loading...</p>
@@ -90,7 +128,9 @@ function JobBody() {
         ) : data?.length ? (
           data
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((item) => <MiniJob key={item.Num} {...item} />)
+            .map((item, index) => (
+              <MiniJob key={index + 1} Num={index + 1} {...item} />
+            ))
         ) : (
           <p>No items available</p>
         )}

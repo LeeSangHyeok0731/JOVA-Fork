@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import LoginButton from "./loginBtn";
-import Header from "../../components/Header";
 import styled from "styled-components";
 
 function useQuery() {
@@ -9,7 +8,13 @@ function useQuery() {
 }
 
 const Wrapper = styled.div`
-  padding-top: 100px;
+  padding-top: 200px;
+  width: 99vw;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
 `;
 
 const Login = () => {
@@ -43,13 +48,10 @@ const Login = () => {
   }, [code]);
 
   return (
-    <div>
-      <Header />
-      <Wrapper>
-        <h1>Code: {code}</h1>
-        <LoginButton />
-      </Wrapper>
-    </div>
+    <Wrapper>
+      <h1>로그인하고 다양한 서비스를 누려보세요!</h1>
+      <LoginButton />
+    </Wrapper>
   );
 };
 
