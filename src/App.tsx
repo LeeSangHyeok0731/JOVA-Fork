@@ -10,6 +10,7 @@ import JobNotion from "./page/JobPage/JobNotion/JobNotion";
 import ProfilCorrection from "./page/Profil/profilcorrection/ProfilCorrection";
 import LoginPage from "./page/login/loginPage";
 import DetailJob from "./page/DetailJob/DetailJob";
+import SignUp from "./page/login/SignUp";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/jobnotion" element={<JobNotion />} />
         <Route path="/profilcorrection" element={<ProfilCorrection />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </>
   );

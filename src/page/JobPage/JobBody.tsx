@@ -128,6 +128,7 @@ function JobBody() {
         ) : data?.length ? (
           data
             .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+            .reverse()
             .map((item, index) => (
               <MiniJob key={index + 1} Num={index + 1} {...item} />
             ))

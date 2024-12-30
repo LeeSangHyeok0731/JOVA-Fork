@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Helmet } from "react-helmet";
+import usePostNotionList from "../../../custom/usePostNotionList";
+import { useNavigate } from "react-router-dom";
 
 const WrapperBox = styled.div`
   width: 100vw;
@@ -90,12 +92,14 @@ const CloseButton = styled.button`
 
 function NotificationBody() {
   const [title, setTitle] = useState<string>("");
-
   const [contents, setContents] = useState<string>(
     "# 마크다운 ```문법```을 사용해 작성해 주세요"
   );
+
   const [images, setImages] = useState<{ id: string; base64: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const { postArticle } = usePostNotionList();
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -128,9 +132,19 @@ function NotificationBody() {
     e.preventDefault();
   };
 
+  const go = useNavigate();
+
   const goServer = () => {
-    console.log(title);
-    console.log(contents);
+    go("/notion");
+    const articleData = {
+      title: title,
+      content: contents,
+      category: 0,
+      author: "이상혁",
+      endsAt: "2024.12.26",
+    };
+
+    postArticle(articleData);
   };
 
   useEffect(() => {

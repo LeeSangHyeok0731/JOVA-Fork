@@ -39,7 +39,7 @@ function RecentNotion() {
         ) : error ? (
           <p>{error}</p>
         ) : data?.length ? (
-          data.map((data, index) => {
+          data.reverse().map((data, index) => {
             if (index < 4)
               return (
                 <MiniCardJob

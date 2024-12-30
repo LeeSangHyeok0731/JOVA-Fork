@@ -17,7 +17,7 @@ type Input = {
   endsAt?: string;
 };
 
-const usePostArticleList = () => {
+const usePostNotionList = () => {
   const [data, setData] = useState<Article[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const usePostArticleList = () => {
   const name = useProfilContext();
 
   const url =
-    "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/articles";
+    "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/announcements";
 
   const postArticle = async ({ title, content, category, endsAt }: Input) => {
     setLoading(true);
@@ -82,4 +82,4 @@ const usePostArticleList = () => {
   return { postArticle, data, loading, error };
 };
 
-export default usePostArticleList;
+export default usePostNotionList;

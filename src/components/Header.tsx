@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import MyIcon from "../images/PeopleIcon";
 import MainIcon from "../images/MainIcon";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/loginContext";
 
 const HeaderWrapper = styled.div`
   height: 82px;
@@ -30,6 +31,13 @@ const Text = styled(Link)`
   color: black;
 `;
 
+const LoginBtn = styled.div`
+  margin: 0;
+  font-family: "Pretendard-Regular", sans-serif;
+  text-decoration: none;
+  color: black;
+`;
+
 const TextWrapper = styled.div`
   width: 320px;
   display: flex;
@@ -42,6 +50,19 @@ const IconBox = styled(Link)`
 `;
 
 function Header() {
+  const login = useUserContext();
+
+  const go = useNavigate();
+
+  const handleClick = () => {
+    if (login.login) {
+      go("/profil");
+    } else {
+      alert("로그인하고 진행해보세요");
+      go("/login");
+    }
+  };
+
   return (
     <HeaderWrapper>
       <HeaderItemWrapper>
@@ -52,7 +73,7 @@ function Header() {
           <Text to="/">홈</Text>
           <Text to="/jobpage">구인구직</Text>
           <Text to="/notion">공지</Text>
-          <Text to="/profil">프로필</Text>
+          <LoginBtn onClick={handleClick}>프로필</LoginBtn>
         </TextWrapper>
         <IconBox to="/login">
           <MyIcon />

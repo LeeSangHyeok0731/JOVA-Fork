@@ -45,6 +45,17 @@ const ContentBox = styled.div`
   height: auto;
 `;
 
+const SubmitButton = styled.div`
+  width: 163px;
+  height: 65px;
+  background-color: #929292;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 type InfoDetail = {
   Name: string;
   Title: string;
@@ -67,6 +78,7 @@ function InfoBox({ Name, Title, TimeDate, Contents }: InfoDetail) {
       <ContentBox>
         <Markdown rehypePlugins={[rehypeRaw]}>{Contents}</Markdown>
       </ContentBox>
+      <SubmitButton>제출하기</SubmitButton>
     </Body>
   );
 }
