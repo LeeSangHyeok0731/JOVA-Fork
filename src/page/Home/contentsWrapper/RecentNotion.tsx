@@ -32,7 +32,7 @@ function RecentNotion() {
 
   return (
     <Wrapper>
-      <Text>구인구직 판</Text>
+      <Text>공지</Text>
       <NotionWrapper>
         {loading ? (
           <p>Loading...</p>

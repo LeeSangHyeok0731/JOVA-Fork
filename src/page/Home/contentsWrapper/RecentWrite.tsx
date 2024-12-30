@@ -32,7 +32,7 @@ function RecentWrite() {
 
   return (
     <Wrapper>
-      <Text>공지</Text>
+      <Text>구인구직 판</Text>
       <WriteWrapper>
         {loading ? (
           <p>Loading...</p>

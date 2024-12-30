@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useProfilContext } from "../context/context";
 
 type Article = {
   User: string;
@@ -21,16 +22,12 @@ const usePostArticleList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const name = useProfilContext();
+
   const url =
     "https://port-0-jova-backend-m0kvtwm45b2f2eb2.sel4.cloudtype.app/articles";
 
-  const postArticle = async ({
-    title,
-    content,
-    category,
-    author,
-    endsAt,
-  }: Input) => {
+  const postArticle = async ({ content, category, author, endsAt }: Input) => {
     setLoading(true);
     setError(null);
 
@@ -42,7 +39,7 @@ const usePostArticleList = () => {
           Authorization: "aGJojaL6CSEzapYxaK24DLAm+Bp1mUaQ8VvHxyOufDU=",
         },
         body: JSON.stringify({
-          title: title,
+          title: name,
           content: content,
           category: category,
           author: author,

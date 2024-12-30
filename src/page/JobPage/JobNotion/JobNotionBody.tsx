@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import { Helmet } from "react-helmet";
-import usePostArticleList from "../../../custom/usePostArticleList"; // Assuming it's a custom hook
+import { Helmet } from "react-helmet"; /*
+import usePostArticleList from "../../../custom/usePostArticleList";*/ // Assuming it's a custom hook
+import { useNavigate } from "react-router-dom";
 
 const WrapperBox = styled.div`
   width: 100vw;
@@ -96,8 +97,8 @@ function JobNotionBody() {
   );
   const [images, setImages] = useState<{ id: string; base64: string }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const { postArticle } = usePostArticleList(); // Assuming usePostArticleList is a custom hook that returns the function
+  /*
+  const { postArticle } = usePostArticleList(); */ // Assuming usePostArticleList is a custom hook that returns the function
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -130,8 +131,11 @@ function JobNotionBody() {
     e.preventDefault();
   };
 
+  const go = useNavigate();
+
   const handleSubmit = () => {
-    const articleData = {
+    go("/jobpage");
+    /*    const articleData = {
       title: title,
       content: contents,
       category: 0,
@@ -140,7 +144,7 @@ function JobNotionBody() {
     };
 
     // Calling postArticle function directly inside the component
-    postArticle(articleData);
+    postArticle(articleData);*/
   };
 
   useEffect(() => {

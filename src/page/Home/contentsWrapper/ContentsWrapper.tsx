@@ -14,9 +14,9 @@ function Wrapper() {
   return (
     <>
       <ContentsWrapper>
-        <RecentWrite />
-        <Margin />
         <RecentNotion />
+        <Margin />
+        <RecentWrite />
       </ContentsWrapper>
     </>
   );
