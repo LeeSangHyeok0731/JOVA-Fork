@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
 import MiniJob from "./MiniJob";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useGetAricleList from "../../custom/useGetArticlelist";
+import { useUserContext } from "../../context/loginContext";
 
 const Text = styled.h1`
   font-family: "Pretendard-Regular", sans-serif;
@@ -67,7 +68,7 @@ const NotificationButtonBox = styled.div`
   justify-content: center;
 `;
 
-const NotificationButton = styled(Link)`
+const NotificationButton = styled.div`
   text-decoration-line: none;
   color: black;
 `;
@@ -106,6 +107,19 @@ function JobBody() {
   const { data, loading, error } = useGetAricleList();
 
   const total = data != null ? data.length : null;
+
+  const go = useNavigate();
+
+  const login = useUserContext();
+
+  const handleClick = () => {
+    if (login.login === true) {
+      go("/jobnotion");
+    } else {
+      alert("로그인하고 진행해보세요");
+      go("/login");
+    }
+  };
 
   return (
     <Wrapper>
@@ -151,10 +165,8 @@ function JobBody() {
             )
           )}
       </PaginationWrapper>
-      <NotificationButtonBox>
-        <NotificationButton to="/jobnotion">
-          구인구직 작성하기
-        </NotificationButton>
+      <NotificationButtonBox onClick={handleClick}>
+        <NotificationButton>구인구직 작성하기</NotificationButton>
       </NotificationButtonBox>
     </Wrapper>
   );

@@ -19,9 +19,9 @@ const ProfilContext = createContext<ProfilContextType | undefined>(undefined);
 
 // Provider 컴포넌트
 export const ProfilProvider = ({ children }: { children: ReactNode }) => {
-  const [name, setName] = useState("");
-  const [github, setGithub] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("이상혁");
+  const [github, setGithub] = useState("https://github.com/LeeSangHyeok0731");
+  const [email, setEmail] = useState("s24066@gsm.hs.kr");
   const [unMajor, setUnMajor] = useState<number[]>([]);
   const [funMajor, setFunMajor] = useState<number[]>([]);
 
