@@ -107,6 +107,8 @@ function JobBody() {
 
   const total = data != null ? data.length : null;
 
+  console.log(data);
+
   const go = useNavigate();
 
   const handleClick = () => {
