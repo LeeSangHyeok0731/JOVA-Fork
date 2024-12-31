@@ -138,7 +138,7 @@ function JobBody() {
             .map((item, index) => (
               <MiniJob
                 key={index + 1}
-                Num={currentPage * 10 + index + 1}
+                Num={(currentPage - 1) * 10 + index + 1}
                 {...item}
               />
             ))
