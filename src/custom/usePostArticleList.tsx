@@ -44,7 +44,7 @@ const usePostArticleList = () => {
       );
 
       if (!tokenResponse.ok) {
-        throw new Error(`HTTP error! Status: ${tokenResponse.status}`);
+        throw new Error(`HTTP error! Status: ${tokenResponse.status}`); //안녕하세요 gistory 화이팅!
       }
 
       const token = await tokenResponse.text(); // 텍스트 형식으로 받기

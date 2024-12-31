@@ -3,7 +3,6 @@ import styled from "styled-components";
 import MiniJob from "./MiniJob";
 import { useNavigate } from "react-router-dom";
 import useGetAricleList from "../../custom/useGetArticlelist";
-import { useUserContext } from "../../context/loginContext";
 
 const Text = styled.h1`
   font-family: "Pretendard-Regular", sans-serif;
@@ -110,15 +109,8 @@ function JobBody() {
 
   const go = useNavigate();
 
-  const login = useUserContext();
-
   const handleClick = () => {
-    if (login.login === true) {
-      go("/jobnotion");
-    } else {
-      alert("로그인하고 진행해보세요");
-      go("/login");
-    }
+    go("/jobnotion");
   };
 
   return (
