@@ -99,21 +99,24 @@ const TextP = styled.p`
   margin: 0;
 `;
 
-function JobBody() {
+const JobBody = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   const { data, loading, error } = useGetAricleList();
 
-  const total = data != null ? data.length : null;
-
-  console.log(data);
+  const total = data?.length ?? 0;
 
   const go = useNavigate();
 
   const handleClick = () => {
     go("/jobnotion");
   };
+
+  // 역순으로 정렬된 데이터를 기준으로 현재 페이지에 맞는 항목 가져오기
+  const sortedData = data?.slice().reverse(); // 원본 데이터 유지
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const currentPageData = sortedData?.slice(startIdx, startIdx + itemsPerPage);
 
   return (
     <Wrapper>
@@ -133,17 +136,14 @@ function JobBody() {
           <p>Loading...</p>
         ) : error ? (
           <p>{error}</p>
-        ) : data?.length ? (
-          data
-            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .reverse()
-            .map((item, index) => (
-              <MiniJob
-                key={index + 1}
-                Num={(currentPage - 1) * 10 + index + 1}
-                {...item}
-              />
-            ))
+        ) : currentPageData?.length ? (
+          currentPageData.map((item, index) => (
+            <MiniJob
+              key={total - startIdx - index}
+              Num={total - startIdx - index} // 전체 순서에서 현재 데이터의 번호 계산
+              {...item}
+            />
+          ))
         ) : (
           <p>No items available</p>
         )}
@@ -168,6 +168,6 @@ function JobBody() {
       </NotificationButtonBox>
     </Wrapper>
   );
-}
+};
 
 export default JobBody;
