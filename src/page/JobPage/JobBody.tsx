@@ -140,7 +140,7 @@ const JobBody = () => {
           currentPageData.map((item, index) => (
             <MiniJob
               key={total - startIdx - index}
-              Num={total - startIdx - index} // 전체 순서에서 현재 데이터의 번호 계산
+              Num={total - startIdx - index}
               {...item}
             />
           ))
